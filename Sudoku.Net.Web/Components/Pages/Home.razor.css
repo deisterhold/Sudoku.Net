@@ -1,0 +1,69 @@
+div.board {
+    display: grid;
+    grid-template-columns: repeat(9, calc(100% / 9));
+    grid-template-rows: repeat(9, calc(100% / 9));
+    width: min(calc(80vh - 3.5rem), calc(80vw - 250px));
+    height: min(calc(80vh - 3.5rem), calc(80vw - 250px));
+    border: min(1vh, 1vw) solid black;
+}
+
+div.board.valid {
+    background-color: #00cc00cc;
+}
+
+div.board.invalid {
+    background-color: #cc0000cc;
+}
+
+div.tile {
+    width: 100%;
+    height: 100%;
+    border: min(0.25vh, 0.25vw) solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+div.tile.selected {
+    background-color: #cccccc;
+}
+
+div.tile > input {
+    width: 100%;
+    height: 100%;
+}
+
+div.col-3,
+div.col-6 {
+    border-right: min(0.5vh, 0.5vw) solid black;
+}
+
+div.col-4,
+div.col-7 {
+    border-left: min(0.5vh, 0.5vw) solid black;
+}
+
+div.row-3,
+div.row-6 {
+    border-bottom: min(0.5vh, 0.5vw) solid black;
+}
+
+div.row-4,
+div.row-7 {
+    border-top: min(0.5vh, 0.5vw) solid black;
+}
+
+div.numbers {
+    display: grid;
+    grid-template-columns: repeat(9, calc(100% / 9));
+    width: min(calc(80vh - 3.5rem), calc(80vw - 250px));
+    height: min(calc(80vh - 3.5rem) / 9, calc(80vw - 250px) / 9);
+}
+
+button.btn.btn-primary {
+    width: 80%;
+    height: 80%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

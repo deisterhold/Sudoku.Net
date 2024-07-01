@@ -1,0 +1,80 @@
+﻿@page "/"
+@using Sudoku.Net.Core
+@rendermode InteractiveServer
+
+<PageTitle>Home</PageTitle>
+
+<h1>Sudoku</h1>
+
+@if (board == null)
+{
+    <p><em>Generating game...</em></p>
+}
+else
+{
+    <div class="board @(board.IsValid() ? "valid": "invalid")">
+        @for (var y = 0; y < GameBoard.Height; y++)
+        @for (var x = 0; x < GameBoard.Width; x++)
+        {
+            var xx = x;
+            var yy = y;
+            <div title="Double click to clear." class="tile row-@(y+1) col-@(x+1) @(SelectedX == x && SelectedY == y ? "selected" : "")" @onclick="@(e => TileSelected(e, xx, yy))" @ondblclick="@(e => TileCleared(e, xx, yy))">
+                @(board.Get(x, y)?.ToString() ?? "?")
+                @* @if(board.Get(x, y).HasValue) {
+                    <input type="number" id="tile@x@y" value="@(board.Get(x, y))" />
+                } else {
+                    <input type="number" id="tile@x@y" />
+                } *@
+            </div>
+        }
+    </div>
+    <br />
+    <div class="numbers">
+        @for (var i = 0; i < GameBoard.Width; i++)
+        {
+            var num = i + 1;
+            @if(SelectedX.HasValue && SelectedY.HasValue) {
+                <button type="button" class="btn btn-primary" @onclick="@(e => NumberSelected(e, num))">@num</button>
+            } else {
+                <button type="button" class="btn btn-primary" disabled @onclick="@(e => NumberSelected(e, num))">@num</button>
+            }
+        }
+    </div>
+    <br />
+}
+
+@code {
+    public GameBoard board = new GameBoard();
+    public int? SelectedX;
+    public int? SelectedY;
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Simulate asynchronous loading to demonstrate streaming rendering
+        await Task.Delay(500);
+    }
+
+    private void TileSelected(MouseEventArgs e, int x, int y)
+    {
+        if (SelectedX == x && SelectedY == y) {
+            SelectedX = null;
+            SelectedY = null;
+        } else {
+            SelectedX = x;
+            SelectedY = y;
+        }
+    }
+
+    private void TileCleared(MouseEventArgs e, int x, int y)
+    {
+        board.Set(x, y, null);
+    }
+
+    private void NumberSelected(MouseEventArgs e, int value) {
+        if (SelectedX == null || SelectedY == null) {
+            return;
+        }
+
+        board.Set(SelectedX.Value, SelectedY.Value, value);
+    }
+}
